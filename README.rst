@@ -8,6 +8,7 @@ Installation
 ------------
 
 ::
+
     pip install bento
     pip install bentosign
 
@@ -15,6 +16,7 @@ Typical usage
 -------------
 
 ::
+
     import bento
     import bentosign
 
