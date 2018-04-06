@@ -1,7 +1,7 @@
-Pythonic Interface to Bento
-===========================
+Pythonic Interface to BentoSign
+===============================
 
-This Python package offers a Pythonic interface to the Bento RESTful API.
+This Python package offers a Pythonic interface to the BentoSign API.
 It is used by developers to manage Bento data.
 
 Installation
@@ -9,7 +9,6 @@ Installation
 
 ::
 
-    pip install bento
     pip install bentosign
 
 Typical usage
@@ -17,10 +16,10 @@ Typical usage
 
 ::
 
-    import bento
     import bentosign
 
-    auth_token = bento.authenticate()
-    package = bentosign.Package.get(name='Some package name')
-    recipient = bentosign.Recipient.get(email='recipient@example.com')
-    process = bentosign.Process.create(package_id=package.id, recipient_id=recipient.id)
+    # Retrieve a list of packages using a name filter
+    packages = bentosign.Package.find(name='%One%')
+
+    # Create a new signing Process for a specific Recipient and Package
+    process = bentosign.Process.create(email='ling.thio@gmail.com', package_name='Package One')
