@@ -101,4 +101,4 @@ class BentoObject(dict):
     @classmethod
     def _process_response_code(cls, method, url, response):
         if response.status_code!=200:
-            raise BentoError(method + ' ' + url + 'returned' + str(response.status_code))
+            raise BentoError(method + ' ' + url + ' returned ' + str(response.status_code))
