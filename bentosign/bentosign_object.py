@@ -1,13 +1,13 @@
 import json
 import requests
 
-from .bento_errors import BentoError
+from .bentosign_errors import BentoSignError
 
-# An BentoObject is a dictionary where ``object.key=value`` is a shortcut for ``object[key]=value``
-class BentoObject(dict):
+# An BentoSignObject is a dictionary where ``object.key=value`` is a shortcut for ``object[key]=value``
+class BentoSignObject(dict):
 
     def __init__(self):
-        super(BentoObject, self).__init__()
+        super(BentoSignObject, self).__init__()
 
 
     # Define __getattr__, __setattr__ and __delattr, so that
@@ -22,12 +22,12 @@ class BentoObject(dict):
 
     def __setattr__(self, key, value):
         if key[0] == '_':
-            return super(BentoObject, self).__setattr__(key, value)
+            return super(BentoSignObject, self).__setattr__(key, value)
         self[key] = value
 
     def __delattr__(self, key):
         if key[0] == '_':
-            return super(BentoObject, self).__delattr__(key)
+            return super(BentoSignObject, self).__delattr__(key)
         if key in self:
             del self[key]
         else:
@@ -53,8 +53,8 @@ class BentoObject(dict):
 
         # Create Object from JSON
         object = cls()
-        data = json.loads(response.content)
-        object.load_object_from_data(data)
+        payload = json.loads(response.content)
+        object.load_object_from_data(payload['object'])
         return object
 
     @classmethod
@@ -66,10 +66,10 @@ class BentoObject(dict):
 
         # Create Objects from JSON list
         objects = []
-        data_list = json.loads(response.content)
-        for data in data_list:
+        payload = json.loads(response.content)
+        for object_data in payload['objects']:
             object = cls()
-            object.load_object_from_data(data)
+            object.load_object_from_data(object_data)
             objects.append(object)
 
         return objects
@@ -82,9 +82,9 @@ class BentoObject(dict):
         cls._process_response_code('POST', url, response)
 
         # Create Object from JSON
+        payload = json.loads(response.content)
         object = cls()
-        data = json.loads(response.content)
-        object.load_object_from_data(data)
+        object.load_object_from_data(payload['object'])
         return object
 
     @classmethod
@@ -101,4 +101,11 @@ class BentoObject(dict):
     @classmethod
     def _process_response_code(cls, method, url, response):
         if response.status_code!=200:
-            raise BentoError(method + ' ' + url + ' returned ' + str(response.status_code))
+            payload = json.loads(response.content)
+            error_message = "%s %s returned %d" % (method, url, response.status_code)
+            if payload:
+                error = payload.get('error', None)
+                if error:
+                    error_message = "BentoSignError %d: %s" % (error.code, error.message)
+
+            raise BentoSignError(error_message)

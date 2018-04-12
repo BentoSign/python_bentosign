@@ -1,6 +1,6 @@
-from bentosign import BentoObject, BentoError
+from bentosign import BentoSignObject, BentoSignError
 
-class Recipient(BentoObject):
+class Recipient(BentoSignObject):
     @classmethod
     def get_class_url(cls):
         url = cls.get_base_url()+'recipients'
@@ -11,6 +11,6 @@ class Recipient(BentoObject):
         object = cls(email, api_key, **params)
         try:
             object.get_object()
-        except BentoError:
+        except BentoSignError:
             pass
         return object

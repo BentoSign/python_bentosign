@@ -1,0 +1,3 @@
+class BentoSignError(Exception):
+    pass
+

@@ -1,5 +1,5 @@
-from .bento_errors import BentoError
-from .bento_object import BentoObject
+from .bentosign_errors import BentoSignError
+from .bentosign_object import BentoSignObject
 
 from .document import *
 from .package import *

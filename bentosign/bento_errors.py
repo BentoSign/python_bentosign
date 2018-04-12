@@ -1,3 +1,0 @@
-class BentoError(Exception):
-    pass
-

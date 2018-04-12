@@ -1,6 +1,6 @@
-from bentosign import BentoObject
+from bentosign import BentoSignObject
 
-class Document(BentoObject):
+class Document(BentoSignObject):
     @classmethod
     def get_class_url(cls):
         url = cls.get_base_url()+'documents'
